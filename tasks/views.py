@@ -64,7 +64,7 @@ def contacto(request):
         return render(request, 'contacto.html', {"form": ContacForm})
     else:
         try:
-            form = TaskForm(request.POST)
+            form = ContacForm(request.POST)
             new_msg = form.save(commit=False)
             new_msg.save()
             return redirect('home')
