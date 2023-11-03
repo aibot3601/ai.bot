@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from .models import Task
+from .models import Task, Contacto
 
-from .forms import TaskForm
+from .forms import TaskForm, ContacForm
 
 # Create your views here.
 
@@ -58,6 +58,18 @@ def create_task(request):
 
 def home(request):
     return render(request, 'home.html')
+
+def contacto(request):
+    if request.method == "GET":
+        return render(request, 'contacto.html', {"form": ContacForm})
+    else:
+        try:
+            form = TaskForm(request.POST)
+            new_msg = form.save(commit=False)
+            new_msg.save()
+            return redirect('home')
+        except ValueError:
+            return render(request, 'contacto.html', {"form": ContacForm, "error": "Error al enviar formulario de Contacto."})
 
 
 @login_required
