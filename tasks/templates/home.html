@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %}
-
+{% load static %}
   <div class="container p-4">
 
 <!-- Hero Section -->
 <header class="row bg-dark" style="color: white">
   <div class="col-md-4 p-5">
-    <img src="/media/gallery/imgfrontend.png" style="border: none"/>
+    <img src="{% static 'gallery/imgfrontend.png' %}" alt="imgfrontend!">
   </div>
 
   <div class="col-md-8 my-auto p-4">
