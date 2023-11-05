@@ -1,20 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Upload Image</title>
-  </head>
-  <body>
-    <form action="{% url 'gallery:upload_image' %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <p>
-          <input id="id_image" type="file" accept="image/*" name="image" required>
-      </p>
-      <p>
-          Image name:
-          <input id="id_name" type="text" name="name" required>
-      </p>
-      <input type="submit" value="Submit" />
+{% extends 'base.html' %} {% block content %}
+
+
+    
+<main class="form-signin w-50 m-auto p-2">
+  <h1>Subir imágen</h1>
+    <form action="{% url 'gallery:upload_image' redir='home' %}" method="post" enctype="multipart/form-data" class="form-control">
+      {% csrf_token %}        
+          
+      <input type="hidden" id="redir" name="redir" value="{{ pagina.redir }}">
+          
+      <div class="col-md-12 p-1">
+          <input id="id_image" type="file" accept="image/*" name="image" class="btn btn-secondary" style="width: 460px" required>
+      </div>
+      <div class="col-md-12 p-1">
+        <div class="form-floating bg-light">
+          <input id="id_name" type="text" name="name" placeholder="Nombre de la imágen" class="form-control" required>
+          <label for="id_name">Nombre de la imágen</label>
+        </div>
+      </div>
+      <div class="col-md-12 p-1 text-center"> 
+          <input type="submit" value="Subir imágen" class="btn btn-primary" />
+      </div>
     </form>
-  </body>
-</html>
+</main>
+
+{% endblock %}

@@ -24,7 +24,7 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/gallery/upload_image">Subir imágen</a>
+          <a class="nav-link" href="{% url 'gallery:upload_image' redir='home' %}">Subir imágen</a>
         </li>
         <li class="nav-item">
           <a href="{% url 'tasks' %}" class="nav-link">Tasks</a>
