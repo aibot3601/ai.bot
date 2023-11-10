@@ -1,9 +1,15 @@
 from pathlib import Path
 import os
 import dj_database_url
-
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# initialize environment variables
+
+env = environ.Env()
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env.prod'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'tasks',
     'gallery',
+    'apps',
 ]
 
 MIDDLEWARE = [
@@ -71,12 +78,25 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# Database
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
+def get_db_config(environ_var='DATABASE_URL'):
+    """Get Database configuration."""
+    options = env.db(var=environ_var, default='sqlite:///db.sqlite3')
+    if options.get('ENGINE') != 'django.db.backends.sqlite3':
+        return options
+
+    # This will allow use a relative to the project root DB path
+    # for SQLite like 'sqlite:///db.sqlite3'
+    if not options['NAME'] == ':memory:' and not os.path.isabs(options['NAME']):
+        options.update({'NAME': os.path.join(BASE_DIR, options['NAME'])})
+
+    return options
+
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': get_db_config()
 }
 
 
@@ -118,9 +138,9 @@ LOGIN_URL = '/signin'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+STATIC_URL = 'static/'
 
 STATICFILES_DIR = [os.path.join(BASE_DIR, 'static')]
-STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -135,6 +155,12 @@ if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
     # and creating unique names for each version so they can safely be cached forever.
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Variables para correo
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', default=True)
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

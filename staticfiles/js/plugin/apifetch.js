@@ -26,10 +26,12 @@ let selected = [];
 
 function llenarfld(frm,url){
     
-
+    //alert(url);
+    //apps/password/vertext/
     let arrruta = url.split("/");
     //alert("arrruta="+arrruta[0]+", "+arrruta[1]+", "+arrruta[2]+", "+arrruta[3]);
-    //arrruta=, 140, coop, select_col
+    //arrruta=frmsignin, tasks, password, vertext 
+    //arrruta=, tasks, text, vertext frm+'/'+page+'/'+idpsw+'/vertext/'+div_eye
     let ruta = arrruta[3];
     document.getElementById("ruta").value = ruta;
     
@@ -348,7 +350,25 @@ function llenarfld(frm,url){
             
                 var idinp = res.data["idinp"];
                 document.getElementById(idinp).value = res.data["codigo"];
+            
+            } else if ( ruta == "vertext") {            
                 
+                var frm = res.data["frm"];
+                
+                var nomdiv_eye = document.getElementById("nomdiv_eye").value; 
+                
+                var nomdiv_eye2 = document.getElementById(nomdiv_eye).value;
+                
+                let resspan = document.getElementById(nomdiv_eye2);
+                var resdiv = res.data["span"];
+                resspan.innerHTML = resdiv;
+                
+            } else if ( ruta == "genpassw") {
+            
+                document.getElementById("password1").value = res.data["valpassw"];
+            
+                document.getElementById("password2").value = res.data["valpassw"];
+            
             }
     });
 
@@ -752,22 +772,20 @@ function orgper(nomid) {
        
 }
 
-function mospsw(idpsw,claseicon) {
+function mospsw(tippsw, page, frm, div_eye, idpsw) {
 
-    let tipo = document.getElementById(idpsw);
-    const classi = document.getElementById(claseicon).classList;
-    if (tipo.type == "password") {
-        tipo.type = "text";
-        classi.remove("fa-eye-slash");
-        classi.add("fa-eye");
+    document.getElementById("nomdiv_eye").value = div_eye;
+    
+    llenarfld(frm,'/'+page+'/'+idpsw+'.'+tippsw+'/vertext/'+frm+'.'+div_eye);
+    
+} 
 
-    } else {
-        tipo.type = "password";
-        classi.remove("fa-eye");
+function passwordgen(page,frm,div_eye) {
 
-        classi.add("fa-eye-slash");
+    document.getElementById("nomdiv_eye").value = div_eye;
 
-    }
+    llenarfld(frm,'/'+page+'/idpsw/genpassw/');
+    
 } 
 
 function llenartip(tipuser) {
@@ -925,6 +943,35 @@ function fntord1(ascdesc,frm,x,url,move) {
     llenarfld(frm,url);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

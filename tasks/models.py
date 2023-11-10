@@ -19,6 +19,9 @@ class Contacto(models.Model):
   nomorg = models.CharField(max_length=100)
   correo = models.CharField(max_length=100)
   mensaje = models.TextField(max_length=1000)
+  asunto = models.CharField(max_length=200, default='Asunto')
+  created = models.DateTimeField(auto_now_add=True)
+  telefono = models.CharField(max_length=50,null=False)
 
   def __str__(self):
     return self.nomorg
@@ -27,9 +30,23 @@ class Image(models.Model):
     title = models.CharField(max_length=128)
     file = models.ImageField(upload_to='images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
+    tip_user = models.IntegerField(blank=True, null=True)
+    
     class Meta:
         ordering = ['-uploaded_at']
 
     def __str__(self):
         return f"{self.title}"
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

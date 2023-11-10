@@ -1,7 +1,84 @@
 
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.utils.translation import gettext, gettext_lazy as _
 from .models import Task, Contacto
+
+
+class LoginForm(forms.Form):  
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Usuario",
+                "class": "form-control",
+                'id': "cirif"
+            }
+        ))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Contraseña",
+                "class": "form-control",
+                "id": "password"
+            }
+        ))
+
+class SignUpForm(UserCreationForm):
+#id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined    
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Usuario",
+                "class": "form-control",
+                'id': "cirif"
+            }
+        ))
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control"
+            }
+        ))
+    organizacion = forms.IntegerField(
+        widget=forms.TextInput(
+            attrs={
+                "type": "hidden",
+                "id": "org",
+                "name": "org",
+            }
+        ))
+    tip_user = forms.IntegerField(
+        widget=forms.TextInput(
+            attrs={
+                "type": "hidden",
+                "id": "tipuser",
+                "name": "tipuser",
+            }
+        ))
+#password, last_login, username, email, organizacion, tip_user
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Contraseña",
+                "class": "form-control",
+                "id": "password1"
+            }
+        ))
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Repetir Contraseña",
+                "class": "form-control",
+                "id": "password2"
+            }
+        ))
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'organizacion', 'tip_user', 'password1', 'password2')
 
 class TaskForm(ModelForm):
     class Meta:
@@ -26,14 +103,30 @@ class ContacForm(ModelForm):
                 "class": "form-control",
                 'id': "nomorg"
             }
-        ))
-        
+        ))  
+    telef = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Teléfono",
+                "class": "form-control",
+                'id': "telefono"
+            }
+        ))        
     correo = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "name@example.com",
                 "class": "form-control",
                 'id': "correo"
+            }
+        ))
+        
+    asunto = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Asunto",
+                "class": "form-control",
+                'id': "asunto"
             }
         ))
         
@@ -49,5 +142,8 @@ class ContacForm(ModelForm):
 
     class Meta:
         model = Contacto
-        fields = ('rif', 'nomorg', 'correo', 'mensaje')
+        fields = ('rif', 'nomorg', 'telef', 'correo', 'asunto', 'mensaje')
+        
+        
+        
         
